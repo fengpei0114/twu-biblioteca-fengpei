@@ -1,5 +1,7 @@
 package com.twu.biblioteca.service;
 
+import com.twu.biblioteca.BibliotecaApp;
+import com.twu.biblioteca.bean.BibliotecaBook;
 import com.twu.biblioteca.bean.Book;
 
 import java.util.ArrayList;
@@ -7,16 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookService {
-    private List<Book> booklist = new ArrayList<>();
+    private List<Book> booklist;
     private List<Book> CanCheckoutBook = new ArrayList<>();
 
     public BookService(){
-        booklist.add(new Book("Java","JK","1990",1));
-        booklist.add(new Book("C#","JK","1991",1));
-        booklist.add(new Book("React","JK","1992",1));
-        booklist.add(new Book("Angular","JK","1993",1));
-        booklist.add(new Book("JavaScript","JK","1994",1));
-        booklist.add(new Book("HTML","JK","1995",1));
+        booklist = new BibliotecaBook().getBibliotecaBooks();
         this.CanCheckoutBook = this.booklist;
     }
     /**

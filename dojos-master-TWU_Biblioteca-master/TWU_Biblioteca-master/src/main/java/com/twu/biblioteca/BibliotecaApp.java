@@ -17,7 +17,7 @@ public class BibliotecaApp {
         InputUtil inputUtil = new InputUtil();
         bibliotecaApp.welcome();
 
-        System.out.println("1.浏览全部图书\n2.借书\n3.还书\n4.退出系统");
+        System.out.println("1.List of Book\n2.Checkout book\n3.Return book\n4.exit");
 
         while(true){
             int choose = inputUtil.getInt("please enter number which you want to do: ");
