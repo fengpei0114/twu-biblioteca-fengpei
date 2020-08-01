@@ -1,7 +1,6 @@
 package com.twu.biblioteca.service;
 
-import com.twu.biblioteca.BibliotecaApp;
-import com.twu.biblioteca.bean.BibliotecaBook;
+import com.twu.biblioteca.bean.BibliotecaHasList;
 import com.twu.biblioteca.bean.Book;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class BookService {
     private List<Book> CanCheckoutBook = new ArrayList<>();
 
     public BookService(){
-        booklist = new BibliotecaBook().getBibliotecaBooks();
+        booklist = new BibliotecaHasList().getBibliotecaBooks();
         this.CanCheckoutBook = this.booklist;
     }
     /**
