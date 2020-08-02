@@ -1,9 +1,11 @@
 package com.twu.biblioteca.util;
 
 import com.twu.biblioteca.bean.Book;
+import com.twu.biblioteca.bean.Movie;
 
-public class InputBookUtil {
+public class GetInputMsgUtil {
     private Book book;
+    private Movie movie;
     private InputUtil inputUtil = new InputUtil();
 
     public void setInputUtil(InputUtil inputUtil) {
@@ -23,6 +25,14 @@ public class InputBookUtil {
         return book;
     }
 
-    public InputBookUtil() {
+    public GetInputMsgUtil() {
+    }
+
+    public Movie getMovie() {
+        String name = this.inputUtil.getString("please write movie name： ");
+        String year = this.inputUtil.getString("please write movie year： ");
+        String director = this.inputUtil.getString("please write movie director： ");
+        this.movie = new Movie(name,year,director);
+        return movie;
     }
 }

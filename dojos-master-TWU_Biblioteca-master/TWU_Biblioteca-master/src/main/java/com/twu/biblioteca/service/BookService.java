@@ -12,8 +12,7 @@ public class BookService {
     private List<Book> CanCheckoutBook = new ArrayList<>();
 
     public BookService(){
-        booklist = new BibliotecaHasList().getBibliotecaBooks();
-        this.CanCheckoutBook = this.booklist;
+        CanCheckoutBook = booklist = new BibliotecaHasList().getBibliotecaBooks();
     }
     /**
       *@author fengpei
@@ -45,9 +44,10 @@ public class BookService {
       *@Return true：存在，可以借；false：不存在，不能借
       **/
     public boolean CheckOutBook(Book book) {
-        if(findBood(book) != -1){
-            booklist.get(findBood(book)).setNum(booklist.get(findBood(book)).getNum() - 1);
-            this.CanCheckoutBook = booklist.stream().filter(p -> p.getNum() != 0).collect(Collectors.toList());
+        int index = this.booklist.indexOf(book);
+        if(index != -1 && this.booklist.get(index).getNum() != 0){
+            this.booklist.get(index).setNum(this.CanCheckoutBook.get(index).getNum() - 1);
+            this.CanCheckoutBook = this.booklist.stream().filter(p -> p.getNum() != 0).collect(Collectors.toList());
             return true;
         }else{
             return false;
@@ -60,26 +60,14 @@ public class BookService {
       *@Return true：该图书是本图书馆的；false：该图书不是本图书馆的
       **/
     public boolean ReturnBook(Book book){
-        if(findBood(book) != -1){
-            booklist.get(findBood(book)).setNum(booklist.get(findBood(book)).getNum() + 1);
-            this.CanCheckoutBook = booklist.stream().filter(p -> p.getNum() != 0).collect(Collectors.toList());
+        int index = this.booklist.indexOf(book);
+
+        if(index != -1){
+            this.booklist.get(index).setNum(this.booklist.get(index).getNum() + 1);
+            this.CanCheckoutBook = this.booklist.stream().filter(p -> p.getNum() != 0).collect(Collectors.toList());
             return true;
         }
         return false;
-    }
-    /**
-      *@author fengpei
-      *@Description 查找馆内是否有该图书
-      *@Param book：被查询的图书
-      *@Return int：如果有，返回图书的index，没有则返回-1
-      **/
-    public int findBood(Book book){
-        for(int i = 0; i < booklist.size(); i++){
-            if(booklist.get(i).equals(book)){
-                return i;
-            }
-        }
-        return -1;
     }
 
 }

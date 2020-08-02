@@ -1,7 +1,9 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.bean.Movie;
 import com.twu.biblioteca.service.BookService;
 import com.twu.biblioteca.bean.Book;
+import com.twu.biblioteca.service.MovieService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,7 @@ import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BibliotecaAppTest {
@@ -50,7 +53,7 @@ public class BibliotecaAppTest {
     public void testChooseInvalidNumberForNextStep() {
         bibliotecaApp = new BibliotecaApp();
 
-        bibliotecaApp.choosePart(5);
+        bibliotecaApp.choosePart(10);
 
         String expected = new String("Please select a valid option");
         assertEquals(expected,bytes.toString().trim().replace("\r",""));
@@ -62,18 +65,18 @@ public class BibliotecaAppTest {
      **/
     @Test
     public void testChooseValidNumberForNextStep() {
-        BookService bookservice = Mockito.mock(BookService.class);
+        BookService mockbookservice = Mockito.mock(BookService.class);
         bibliotecaApp = new BibliotecaApp();
 
-        bibliotecaApp.setBookservice(bookservice);
+        bibliotecaApp.setBookservice(mockbookservice);
         bibliotecaApp.choosePart(1);
 
-        Mockito.verify(bookservice,Mockito.times(1)).ShowBooks();
+        Mockito.verify(mockbookservice,Mockito.times(1)).ShowBooks();
     }
 
     /**
      *@author fengpei
-     *@Description 测试CheckoutBook方法成功情况
+     *@Description 测试CheckoutBook方法，存在图书的情况
      **/
     @Test
     public void testCheckoutBookSuccessful(){
@@ -89,7 +92,7 @@ public class BibliotecaAppTest {
     }
     /**
      *@author fengpei
-     *@Description 测试CheckoutBook方法不成功情况
+     *@Description 测试CheckoutBook方法，不存在图书的情况
      **/
     @Test
     public void testCheckoutBookUnSuccessful(){
@@ -137,6 +140,39 @@ public class BibliotecaAppTest {
         assertEquals(expected,bytes.toString().trim().replace("\r",""));
     }
 
+    /**
+      *@author fengpei
+      *@Description 测试ChooseCheckoutMovie方法，存在电影的情况
+      **/
+    @Test
+    public void testChooseCheckoutMovieSuccessful() {
+        MovieService mockmovieService = Mockito.mock(MovieService.class);
+        when(mockmovieService.CheckOutMovie((Movie)Mockito.any())).thenReturn(true);
+        bibliotecaApp = new BibliotecaApp();
+
+        bibliotecaApp.setMovieService(mockmovieService);
+        bibliotecaApp.ChooseCheckoutMovie((Movie)Mockito.any());
+
+        String expect = new String("Thank you! Enjoy the movie");
+        assertEquals(expect, bytes.toString().trim().replace("\r",""));
+    }
+
+    /**
+     *@author fengpei
+     *@Description 测试ChooseCheckoutMovie方法，电影不存在或没有的情况
+     **/
+    @Test
+    public void testChooseCheckoutMovieUnSuccessful() {
+        MovieService mockmovieService = Mockito.mock(MovieService.class);
+        when(mockmovieService.CheckOutMovie((Movie)Mockito.any())).thenReturn(false);
+        bibliotecaApp = new BibliotecaApp();
+
+        bibliotecaApp.setMovieService(mockmovieService);
+        bibliotecaApp.ChooseCheckoutMovie((Movie)Mockito.any());
+
+        String expect = new String("sorry,the movie is not available");
+        assertEquals(expect, bytes.toString().trim().replace("\r",""));
+    }
 
     @After
     public void After() {

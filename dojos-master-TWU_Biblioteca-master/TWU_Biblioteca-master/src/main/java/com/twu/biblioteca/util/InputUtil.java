@@ -28,7 +28,9 @@ public class InputUtil {
       *@Return String：用户输入的字符串
       **/
     public String getString(String msg) {
+        scanner.useDelimiter("\n");
         System.out.print(msg);
-        return scanner.next();
+        String string = scanner.next();
+        return string;
     }
 }

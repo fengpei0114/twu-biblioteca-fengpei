@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class BookServiceTest{
     private PrintStream console = null;
     private ByteArrayOutputStream bytes = null;
-    private BookService bookservice = new BookService();
+    private BookService bookservice;
     private List<Book> books = null;
 
     @Before
@@ -33,6 +33,7 @@ public class BookServiceTest{
       **/
     @Test
     public void testBookListTest() {
+        bookservice = new BookService();
         books = bookservice.GetCanCheckOutBookList();
 
         assertNotNull(books);
@@ -45,10 +46,11 @@ public class BookServiceTest{
       **/
     @Test
     public void testBookAuthor_PublicationYear() {
+        bookservice = new BookService();
         books = bookservice.GetCanCheckOutBookList();
 
         assertThat(books.get(1).getAuthor(),is("JK"));
-        assertThat(books.get(2).getPublication_year(), is("1992"));
+        assertThat(books.get(0).getPublication_year(), is("1990"));
     }
     /**
      *@author fengpei
@@ -56,6 +58,7 @@ public class BookServiceTest{
      **/
     @Test
     public void testGetCanCheckOutBookList() {
+        bookservice = new BookService();
         books = bookservice.GetCanCheckOutBookList();
         List<Book> newTestBooks = books.stream().filter(p -> p.getNum() == 0).collect(Collectors.toList());
         assertEquals(0,newTestBooks.size());
@@ -63,26 +66,46 @@ public class BookServiceTest{
 
     /**
      *@author fengpei
-     *@Description 测试CheckOutBook方法成功情况
+     *@Description 测试CheckOutBook方法成功的情况，即图书存在,且数量为1
      **/
     @Test
-    public void testCheckOutBookSuccessful(){
+    public void testCheckOutOnlyBookSuccessful(){
         Book book = new Book("C#","JK","1991");
+        bookservice = new BookService();
+
         boolean IsSuccess = bookservice.CheckOutBook(book);
         books = bookservice.GetCanCheckOutBookList();
-        boolean IsHaveBook = books.contains(new Book("C#","JK","1991"));
+        boolean IsHaveBook = books.contains(book);
 
         assertEquals(true,IsSuccess);
         assertEquals(false,IsHaveBook);
-        }
+    }
 
     /**
      *@author fengpei
-     *@Description 测试CheckOutBook方法失败情况
+     *@Description 测试CheckOutBook方法成功的情况，即图书存在,且数量不为1
+     **/
+    @Test
+    public void testCheckOutBookSuccessful(){
+        Book book = new Book("Angular","JK","1993",2);
+        bookservice = new BookService();
+
+        boolean IsSuccess = bookservice.CheckOutBook(book);
+        books = bookservice.GetCanCheckOutBookList();
+        boolean IsHaveBook = books.contains(book);
+
+        assertEquals(true,IsSuccess);
+        assertEquals(true,IsHaveBook);
+    }
+
+    /**
+     *@author fengpei
+     *@Description 测试CheckOutBook方法失败情况,即图书没有或不存在
      **/
     @Test
     public void testCheckOutBookUnsuccessful(){
         Book book = new Book("Java","JK","1922");
+        bookservice = new BookService();
 
         boolean IsSuccess = bookservice.CheckOutBook(book);
         books = bookservice.GetCanCheckOutBookList();
@@ -99,6 +122,7 @@ public class BookServiceTest{
     @Test
     public void testReturnBookSuccessful() {
         Book book = new Book("C#","JK","1991");
+        bookservice = new BookService();
 
         boolean IsSuccess = bookservice.ReturnBook(book);
         books = bookservice.GetCanCheckOutBookList();
@@ -114,7 +138,7 @@ public class BookServiceTest{
      **/
     @Test
     public void testReturnBookUnsuccessful() {
-
+        bookservice = new BookService();
         Book book = new Book("test","test","test");
 
         boolean isSuccess = bookservice.ReturnBook(book);
@@ -123,36 +147,6 @@ public class BookServiceTest{
 
         assertEquals(false,isSuccess);
         assertEquals(false,IsHaveBook);
-    }
-    /**
-     *@author fengpei
-     *@Description 测试FindBook方法成功情况
-     **/
-    @Test
-    public void testFindBookSuccessful() {
-        Book book1 = new Book("Java","JK","1990");
-        Book book2 = new Book("HTML","JK","1995");
-        bookservice = new BookService();
-
-        int index1 = bookservice.findBood(book1);
-        int index2 = bookservice.findBood(book2);
-
-        assertEquals(0,index1);
-        assertEquals(5,index2);
-    }
-
-    /**
-     *@author fengpei
-     *@Description 测试FindBook方法失败情况
-     **/
-    @Test
-    public void testFindBookUnsuccessful() {
-        Book book = new Book("Typora","JK","1992");
-        bookservice = new BookService();
-
-        int index = bookservice.findBood(book);
-
-        assertEquals(-1,index);
     }
 
     @After

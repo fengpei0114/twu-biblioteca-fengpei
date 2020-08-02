@@ -1,12 +1,19 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.bean.Book;
+import com.twu.biblioteca.bean.Movie;
 import com.twu.biblioteca.service.BookService;
-import com.twu.biblioteca.util.InputBookUtil;
+import com.twu.biblioteca.service.MovieService;
+import com.twu.biblioteca.util.GetInputMsgUtil;
 import com.twu.biblioteca.util.InputUtil;
 
 public class BibliotecaApp {
     private BookService bookservice = new BookService();
+    private MovieService movieService = new MovieService();
+
+    public void setMovieService(MovieService movieService) {
+        this.movieService = movieService;
+    }
 
     public void setBookservice(BookService bookservice) {
         this.bookservice = bookservice;
@@ -17,12 +24,19 @@ public class BibliotecaApp {
         InputUtil inputUtil = new InputUtil();
         bibliotecaApp.welcome();
 
-        System.out.println("1.List of Book\n2.Checkout book\n3.Return book\n4.exit");
+        System.out.println("" +
+                "1.List of Book\n" +
+                "2.List of Movie\n" +
+                "3.Checkout book\n" +
+                "4.Return book\n" +
+                "5.Checkout Movie\n" +
+                "6.Return Movie\n" +
+                "7.exit");
 
         while(true){
             int choose = inputUtil.getInt("please enter number which you want to do: ");
             bibliotecaApp.choosePart(choose);
-            if(choose == 4) return;
+            if(choose == 7) return;
         }
     }
     /**
@@ -37,19 +51,36 @@ public class BibliotecaApp {
                 bookservice.ShowBooks();
                 break;
             }
-            case 2: {
-                ChooseCheckoutBook(new InputBookUtil().getBook());
+            case 2:{
+                movieService.ShowMovies();
                 break;
             }
             case 3: {
-                ChooseReturnBook(new InputBookUtil().getBook());
+                ChooseCheckoutBook(new GetInputMsgUtil().getBook());
                 break;
             }
-            case 4 : break;
+            case 4: {
+                ChooseReturnBook(new GetInputMsgUtil().getBook());
+                break;
+            }
+            case 5: {
+                ChooseCheckoutMovie(new GetInputMsgUtil().getMovie());
+                break;
+            }
+            case 6: {
+                break;
+            }
+            case 7 : break;
             default:{
                 System.out.println("Please select a valid option");
             }
         }
+    }
+
+    public void ChooseCheckoutMovie(Movie movie) {
+        boolean isSuccess = movieService.CheckOutMovie(movie);
+
+        System.out.println(isSuccess ? "Thank you! Enjoy the movie":"sorry,the movie is not available");
     }
 
     public void welcome(){
@@ -62,8 +93,8 @@ public class BibliotecaApp {
       *@Return none
       **/
     public void ChooseCheckoutBook(Book book){
-        boolean IsFind = bookservice.CheckOutBook(book);
-        System.out.println(IsFind?"Thank you! Enjoy the book":"sorry,the book is not available");
+        boolean isSuccess = bookservice.CheckOutBook(book);
+        System.out.println(isSuccess?"Thank you! Enjoy the book":"sorry,the book is not available");
     }
     /**
       *@author fengpei
