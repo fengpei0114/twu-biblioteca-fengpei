@@ -2,14 +2,27 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.bean.Book;
 import com.twu.biblioteca.bean.Movie;
+import com.twu.biblioteca.bean.User;
 import com.twu.biblioteca.service.BookService;
 import com.twu.biblioteca.service.MovieService;
+import com.twu.biblioteca.service.UserService;
 import com.twu.biblioteca.util.GetInputMsgUtil;
 import com.twu.biblioteca.util.InputUtil;
 
 public class BibliotecaApp {
     private BookService bookservice = new BookService();
     private MovieService movieService = new MovieService();
+    private UserService userService = new UserService();
+    private InputUtil inputUtil = new InputUtil();
+    public static User user;
+
+    public void setInputUtil(InputUtil inputUtil) {
+        this.inputUtil = inputUtil;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     public void setMovieService(MovieService movieService) {
         this.movieService = movieService;
@@ -24,19 +37,15 @@ public class BibliotecaApp {
         InputUtil inputUtil = new InputUtil();
         bibliotecaApp.welcome();
 
-        System.out.println("" +
-                "1.List of Book\n" +
-                "2.List of Movie\n" +
-                "3.Checkout book\n" +
-                "4.Return book\n" +
-                "5.Checkout Movie\n" +
-                "6.Return Movie\n" +
-                "7.exit");
-
         while(true){
+            System.out.println("--------------------------------------");
+            System.out.println("" +
+                    "1.List of Book\n" +
+                    "2.List of Movie\n" +
+                    "3.Login\n" +
+                    "4.exit");
             int choose = inputUtil.getInt("please enter number which you want to do: ");
-            bibliotecaApp.choosePart(choose);
-            if(choose == 7) return;
+            bibliotecaApp.noLoginChoosePart(choose);
         }
     }
     /**
@@ -45,7 +54,72 @@ public class BibliotecaApp {
       *@Param choose：选择的数字
       *@Return none
       **/
-    public void choosePart(int choose){
+    public void noLoginChoosePart(int choose){
+        switch (choose) {
+            case 1: {
+                bookservice.ShowBooks();
+                break;
+            }
+            case 2:{
+                movieService.ShowMovies();
+                break;
+            }
+            case 3: {
+                UserLogin(new GetInputMsgUtil().getUser());
+                break;
+            }
+            case 4:{
+                System.exit(0);
+            }
+            default:{
+                System.out.println("Please select a valid option");
+            }
+        }
+    }
+
+    public void UserLogin(User inputUser) {
+        int roleNumber = userService.Login(inputUser);
+        if(roleNumber == -1) {
+            System.out.println("Sorry,Wrong library_number or password!");
+        }else if(roleNumber == 0){
+            System.out.println("Successful!");
+            Boolean[] arr = new Boolean[1];
+            arr[0] = true;
+            while(arr[0]) {
+                System.out.println("--------------------------------------");
+                System.out.println("" +
+                        "1.List of Book\n" +
+                        "2.List of Movie\n" +
+                        "3.Checkout book\n" +
+                        "4.Return book\n" +
+                        "5.Checkout Movie\n" +
+                        "6.User Information\n" +
+                        "7.exit");
+                int choose = inputUtil.getInt("please enter number which you want to do: ");
+                customerChoosePart(choose,arr);
+            }
+        }else{
+            System.out.println("Successful!");
+            Boolean[] arr = new Boolean[1];
+            arr[0] = true;
+            while(arr[0]) {
+                System.out.println("--------------------------------------");
+                System.out.println("" +
+                        "1.List of Book\n" +
+                        "2.List of Movie\n" +
+                        "3.Checkout book\n" +
+                        "4.Return book\n" +
+                        "5.Checkout Movie\n" +
+                        "6.Checkout book list\n" +
+                        "7.User Information\n" +
+                        "8.exit");
+                int choose = inputUtil.getInt("please enter number which you want to do: ");
+                adminChoosePart(choose, arr);
+            }
+        }
+    }
+
+    public void customerChoosePart(int choose, Boolean arr[]) {
         switch (choose) {
             case 1: {
                 bookservice.ShowBooks();
@@ -68,9 +142,56 @@ public class BibliotecaApp {
                 break;
             }
             case 6: {
+                userService.ShowUserInformation(user);
                 break;
             }
-            case 7 : break;
+            case 7 : System.exit(0);
+            case 10000: {
+                arr[0] = false;
+                break;
+            }
+            default:{
+                System.out.println("Please select a valid option");
+            }
+        }
+
+    }
+
+    public void adminChoosePart(int choose, Boolean arr[]) {
+        switch (choose){
+            case 1: {
+                bookservice.ShowBooks();
+                break;
+            }
+            case 2:{
+                movieService.ShowMovies();
+                break;
+            }
+            case 3: {
+                ChooseCheckoutBook(new GetInputMsgUtil().getBook());
+                break;
+            }
+            case 4: {
+                ChooseReturnBook(new GetInputMsgUtil().getBook());
+                break;
+            }
+            case 5: {
+                ChooseCheckoutMovie(new GetInputMsgUtil().getMovie());
+                break;
+            }
+            case 6: {
+                userService.ShowCheckoutBookList();
+                break;
+            }
+            case 7: {
+                userService.ShowUserInformation(user);
+                break;
+            }
+            case 8 : System.exit(0);
+            case 10000: {
+                arr[0] = false;
+                break;
+            }
             default:{
                 System.out.println("Please select a valid option");
             }

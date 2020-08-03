@@ -1,9 +1,12 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.bean.Movie;
+import com.twu.biblioteca.bean.User;
 import com.twu.biblioteca.service.BookService;
 import com.twu.biblioteca.bean.Book;
 import com.twu.biblioteca.service.MovieService;
+import com.twu.biblioteca.service.UserService;
+import com.twu.biblioteca.util.InputUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +16,8 @@ import org.mockito.Mockito;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BibliotecaAppTest {
@@ -53,7 +56,7 @@ public class BibliotecaAppTest {
     public void testChooseInvalidNumberForNextStep() {
         bibliotecaApp = new BibliotecaApp();
 
-        bibliotecaApp.choosePart(10);
+        bibliotecaApp.noLoginChoosePart(10);
 
         String expected = new String("Please select a valid option");
         assertEquals(expected,bytes.toString().trim().replace("\r",""));
@@ -69,7 +72,7 @@ public class BibliotecaAppTest {
         bibliotecaApp = new BibliotecaApp();
 
         bibliotecaApp.setBookservice(mockbookservice);
-        bibliotecaApp.choosePart(1);
+        bibliotecaApp.noLoginChoosePart(1);
 
         Mockito.verify(mockbookservice,Mockito.times(1)).ShowBooks();
     }
@@ -172,6 +175,66 @@ public class BibliotecaAppTest {
 
         String expect = new String("sorry,the movie is not available");
         assertEquals(expect, bytes.toString().trim().replace("\r",""));
+    }
+
+    /**
+      *@author fengpei
+      *@Description 测试UserLogin方法，顾客成功登录的情况
+      **/
+    @Test
+    public void testUserLogin_Customer() {
+        UserService mockuserService = Mockito.mock(UserService.class);
+        InputUtil mockInput = Mockito.mock(InputUtil.class);
+        when(mockuserService.Login((User)Mockito.any())).thenReturn(0);
+        when(mockInput.getInt((String)Mockito.any())).thenReturn(10000);
+
+        bibliotecaApp = new BibliotecaApp();
+
+        bibliotecaApp.setUserService(mockuserService);
+        bibliotecaApp.setInputUtil(mockInput);
+        bibliotecaApp.UserLogin(Mockito.any());
+
+
+        assertThat(bytes.toString().trim().replace("\r",""),containsString("Successful!"));
+        assertThat(bytes.toString().trim().replace("\r",""),containsString("6.User Information"));
+    }
+
+    /**
+     *@author fengpei
+     *@Description 测试UserLogin方法，图书管理员成功登录的情况
+     **/
+    @Test
+    public void testUserLogin_admin() {
+        UserService mockuserService = Mockito.mock(UserService.class);
+        InputUtil mockInput = Mockito.mock(InputUtil.class);
+        when(mockuserService.Login((User)Mockito.any())).thenReturn(1);
+        when(mockInput.getInt((String)Mockito.any())).thenReturn(10000);
+
+        bibliotecaApp = new BibliotecaApp();
+
+        bibliotecaApp.setUserService(mockuserService);
+        bibliotecaApp.setInputUtil(mockInput);
+        bibliotecaApp.UserLogin(Mockito.any());
+
+
+        assertThat(bytes.toString().trim().replace("\r",""),containsString("Successful!"));
+        assertThat(bytes.toString().trim().replace("\r",""),containsString("6.Checkout book list"));
+    }
+
+    /**
+     *@author fengpei
+     *@Description 测试UserLogin方法，图书管理员成功登录的情况
+     **/
+    @Test
+    public void testUserLoginUnsuccessful() {
+        UserService mockuserService = Mockito.mock(UserService.class);
+        when(mockuserService.Login((User)Mockito.any())).thenReturn(-1);
+        bibliotecaApp = new BibliotecaApp();
+
+        bibliotecaApp.setUserService(mockuserService);
+        bibliotecaApp.UserLogin(Mockito.any());
+
+        assertThat(bytes.toString().trim().replace("\r",""),containsString("Sorry,Wrong library_number or password!"));
     }
 
     @After

@@ -1,7 +1,10 @@
 package com.twu.biblioteca.service;
 
+import com.twu.biblioteca.BibliotecaApp;
 import com.twu.biblioteca.bean.BibliotecaHasList;
 import com.twu.biblioteca.bean.Book;
+import com.twu.biblioteca.bean.User;
+import sun.text.bidi.BidiLine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +24,23 @@ public class BookService {
       *@Return none
       **/
     public void ShowBooks() {
-        System.out.println("------------BOOK LIST-----------------");
+        System.out.println(" --------------------BOOK LIST--------------------");
+        System.out.printf("%-3s", "|");
+        System.out.printf("%-12s", "Book name");
+        System.out.printf("%-14s", "Book Author");
+        System.out.printf("%-20s", "Publication year");
+        System.out.printf("%2s", "|");
+        System.out.println();
+        System.out.println(" -------------------------------------------------");
         for(int i=0,j=1; i < this.CanCheckoutBook.size(); i++){
-            System.out.println((j++) + ". " + this.CanCheckoutBook.get(i).getName() + "  " + this.CanCheckoutBook.get(i).getAuthor() + "  " + this.CanCheckoutBook.get(i).getPublication_year());
+            System.out.printf("%-3s", "|");
+            System.out.printf("%-12s", this.CanCheckoutBook.get(i).getName());
+            System.out.printf("%-14s", this.CanCheckoutBook.get(i).getAuthor());
+            System.out.printf("%-20s", this.CanCheckoutBook.get(i).getPublication_year());
+            System.out.printf("%2s", "|");
+            System.out.println();
         }
-        System.out.println("--------------------------------------");
+        System.out.println(" -------------------------------------------------");
     }
     /**
       *@author fengpei
@@ -47,7 +62,9 @@ public class BookService {
         int index = this.booklist.indexOf(book);
         if(index != -1 && this.booklist.get(index).getNum() != 0){
             this.booklist.get(index).setNum(this.CanCheckoutBook.get(index).getNum() - 1);
+            new BibliotecaHasList().getBibliotecaCheckoutBook_User().put(this.booklist.get(index),new BibliotecaApp().user);
             this.CanCheckoutBook = this.booklist.stream().filter(p -> p.getNum() != 0).collect(Collectors.toList());
+            System.out.println(this.CanCheckoutBook.get(0).getName());
             return true;
         }else{
             return false;
@@ -64,6 +81,9 @@ public class BookService {
 
         if(index != -1){
             this.booklist.get(index).setNum(this.booklist.get(index).getNum() + 1);
+            System.out.println(this.booklist.get(index).getName());
+            User user = new BibliotecaHasList().getBibliotecaCheckoutBook_User().remove(this.booklist.get(index));
+
             this.CanCheckoutBook = this.booklist.stream().filter(p -> p.getNum() != 0).collect(Collectors.toList());
             return true;
         }

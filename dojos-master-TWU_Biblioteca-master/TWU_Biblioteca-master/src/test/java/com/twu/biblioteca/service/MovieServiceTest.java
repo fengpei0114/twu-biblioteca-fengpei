@@ -48,7 +48,7 @@ public class MovieServiceTest {
 
         movieService.ShowMovies();
 
-        assertThat(bytes.toString().trim().replace("\r",""),containsString("schindler's list   1993   Steven Allan Spielberg   9.5"));
+        assertThat(bytes.toString().trim().replace("\r",""),containsString("schindler's list"));
     }
 
     /**

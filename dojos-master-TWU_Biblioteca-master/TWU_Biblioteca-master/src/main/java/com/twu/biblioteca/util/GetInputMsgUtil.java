@@ -2,10 +2,12 @@ package com.twu.biblioteca.util;
 
 import com.twu.biblioteca.bean.Book;
 import com.twu.biblioteca.bean.Movie;
+import com.twu.biblioteca.bean.User;
 
 public class GetInputMsgUtil {
     private Book book;
     private Movie movie;
+    private User user;
     private InputUtil inputUtil = new InputUtil();
 
     public void setInputUtil(InputUtil inputUtil) {
@@ -34,5 +36,13 @@ public class GetInputMsgUtil {
         String director = this.inputUtil.getString("please write movie director： ");
         this.movie = new Movie(name,year,director);
         return movie;
+    }
+
+    public User getUser() {
+        String library_number = this.inputUtil.getString("please write library number： ");
+        String password = this.inputUtil.getString("please write password： ");
+
+        this.user = new User(library_number,password);
+        return user;
     }
 }
