@@ -17,7 +17,12 @@ public class UserService {
         userList = new BibliotecaHasList().getBibliotecaUser();
     }
 
-
+    /**
+     *@author fengpei
+     *@Description 用户登录，检查用户名密码是否存在
+     *@Param User：
+     *@Return -1：不存在，登录失败；0：存在，为顾客；1：存在，为图书管理员
+     **/
     public int Login(User user) {
         int index = userList.indexOf(user);
         if(index != -1){
@@ -27,7 +32,12 @@ public class UserService {
         }
         return -1;
     }
-
+    /**
+     *@author fengpei
+     *@Description 展示当前用户的个人信息
+     *@Param inputUser：当前用户
+     *@Return none
+     **/
     public void ShowUserInformation(User inputUser) {
         User user = userList.get(userList.indexOf(inputUser));
         System.out.println("-------------USER INFORMATION-------------");
@@ -46,7 +56,12 @@ public class UserService {
         System.out.println("------------------------------------------");
 
     }
-
+    /**
+     *@author fengpei
+     *@Description 展示当前图书馆借出的图书信息
+     *@Param none
+     *@Return none
+     **/
     public void ShowCheckoutBookList() {
         Map<Book,User> checkoutBook_User = new BibliotecaHasList().getBibliotecaCheckoutBook_User();
         System.out.println("--------------------------------------CHECKOUT BOOK LIST--------------------------------------");

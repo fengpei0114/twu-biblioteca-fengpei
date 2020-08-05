@@ -14,12 +14,22 @@ public class MovieService {
     public MovieService(){
         canCheckOutMovieList = movieList = new BibliotecaHasList().getBibliotecaMovies();
     }
-
+    /**
+     *@author fengpei
+     *@Description 获取目前馆内可以被借的电影列表
+     *@Param none
+     *@Return List<Movie>：电影列表
+     **/
     public List<Movie> GetCanCheckOutMovieList() {
         this.canCheckOutMovieList = this.movieList.stream().filter(p -> p.getNum() != 0).collect(Collectors.toList());
         return canCheckOutMovieList;
     }
-
+    /**
+     *@author fengpei
+     *@Description 展示本图书馆里可以被借的所有电影
+     *@Param none
+     *@Return none
+     **/
     public void ShowMovies() {
         System.out.println(" ------------------------------------Movie LIST------------------------------------");
         System.out.printf("%-5s","| ");
@@ -41,7 +51,12 @@ public class MovieService {
         }
         System.out.println(" ----------------------------------------------------------------------------------");
     }
-
+    /**
+     *@author fengpei
+     *@Description 检查要借的电影是否存在
+     *@Param Movie：要借的电影
+     *@Return true：存在，可以借；false：不存在，不能借
+     **/
     public Boolean CheckOutMovie(Movie movie) {
         int index = this.movieList.indexOf(movie);
         if(index != -1) {
@@ -53,11 +68,4 @@ public class MovieService {
         return false;
     }
 
-//    public int findMovie(Movie movie){
-//        this.canCheckOutMovieList.indexOf(movie);
-//        if(findmovie.size() != 0){
-//            return
-//        }
-//        return -1;
-//    }
 }

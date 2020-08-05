@@ -2,7 +2,7 @@
 
 ## 项目介绍
 
-BibliotecaApp需要一个图书馆管理系统，所以使用命令行模式做了一个简易版的图书馆管理系统，目前实现的功能包括了查看图书，借书，还书等。
+BibliotecaApp需要一个图书馆管理系统，所以使用命令行模式做了一个简易版的图书馆管理系统，目前实现的功能包括了查看图书，借书，还书，借电影，查看已借出图书，查看个人信息等。
 
 ## 运行环境
 
@@ -23,15 +23,20 @@ IDE： intelliJ IDEA 11.0.7
 com.twu.biblioteca.bean：
 
 - Book：图书类
-- BibliotecaBook：图书馆书单类
+- BibliotecaHasList：图书馆的书单，电影单，用户信息
+- Movie：电影类
+- User：用户类
+- 
 
 com.twu.biblioteca.service
 
 - BookService：提供图书相关的服务类
+- MovieService：提供电影相关的服务类
+- UserService：提供用户相关的服务类
 
 com.twu.biblioteca.util
 
-- InputBookUtil：提供输入图书信息的工具类
+- InputBookUtil：提供输入各种信息的工具类
 - InputUtil：提供输入信息相关的工具类
 
 bibliotecaApp：提供Main函数和执行类
@@ -41,6 +46,8 @@ bibliotecaApp：提供Main函数和执行类
 com.twu.biblioteca.service
 
 - BookServiceTest：测试BookService中的类
+- MovieServiceTest：测试MovieService中的类
+- UserServiceTest：测试UserService中的类
 
 com.twu.biblioteca.util
 

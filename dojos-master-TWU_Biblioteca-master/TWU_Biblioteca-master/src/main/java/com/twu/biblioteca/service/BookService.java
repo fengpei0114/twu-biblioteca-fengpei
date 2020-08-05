@@ -4,7 +4,6 @@ import com.twu.biblioteca.BibliotecaApp;
 import com.twu.biblioteca.bean.BibliotecaHasList;
 import com.twu.biblioteca.bean.Book;
 import com.twu.biblioteca.bean.User;
-import sun.text.bidi.BidiLine;
 
 import java.util.ArrayList;
 import java.util.List;

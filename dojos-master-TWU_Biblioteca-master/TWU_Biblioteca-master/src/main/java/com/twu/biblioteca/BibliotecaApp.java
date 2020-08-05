@@ -76,7 +76,12 @@ public class BibliotecaApp {
             }
         }
     }
-
+    /**
+     *@author fengpei
+     *@Description 用户进行登录，进行后续操作
+     *@Param inputUser：用户输入的用户信息，包括了用户名和密码
+     *@Return none
+     **/
     public void UserLogin(User inputUser) {
         int roleNumber = userService.Login(inputUser);
         if(roleNumber == -1) {
@@ -118,7 +123,12 @@ public class BibliotecaApp {
             }
         }
     }
-
+    /**
+     *@author fengpei
+     *@Description 用户是顾客时的选择列表
+     *@Param choose：选择的数字，arr[]：控制while循环
+     *@Return none
+     **/
     public void customerChoosePart(int choose, Boolean arr[]) {
         switch (choose) {
             case 1: {
@@ -156,7 +166,12 @@ public class BibliotecaApp {
         }
 
     }
-
+    /**
+     *@author fengpei
+     *@Description 用户是图书管理员时的选择列表
+     *@Param choose：选择的数字，arr[]：控制while循环
+     *@Return none
+     **/
     public void adminChoosePart(int choose, Boolean arr[]) {
         switch (choose){
             case 1: {
@@ -197,7 +212,12 @@ public class BibliotecaApp {
             }
         }
     }
-
+    /**
+     *@author fengpei
+     *@Description 进行借电影操作，查看是否有电影并给予相应的回应
+     *@Param Movie：需要借的电影
+     *@Return none
+     **/
     public void ChooseCheckoutMovie(Movie movie) {
         boolean isSuccess = movieService.CheckOutMovie(movie);
 
